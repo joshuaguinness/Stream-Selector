@@ -9,4 +9,4 @@ I also created an automatic testing script, testCalc.py, which when runs, goes t
 
 ## What I learned
 
-Through this, I brushed up on my python from doing mostly C in the fall. I learned how to use dictionaries properly in python. A big thing I learned while doing this is the basics of how to automatically do testing by having test cases in a seprate script then running that script. I had do think critically about the test cases I was running and their expected output, then call the different functions which read from different files.
+Through this, I brushed up on my python from doing mostly C in the fall. I learned how to use dictionaries properly in python. A big thing I learned while doing this is the basics of how to automatically do testing by having test cases in a separate script then running that script. I had do think critically about the test cases I was running and their expected output, then call the different functions which read from different files.
