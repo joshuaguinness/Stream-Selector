@@ -8,6 +8,8 @@ The program works by reading in data from three different textfiles, the student
 I also created an automatic testing script, testCalc.py, which when runs, goes through 9 different test cases outputting whether they passed or not.
 
 There is also automatic documentation generated via Doxygen. To see the documentation, type "make doc." I decided to push the PDF to the repo anyways.
+
+To view the report I wrote in Latex on this, please visit the report file and view the PDF.
  
 ## What I learned
 
