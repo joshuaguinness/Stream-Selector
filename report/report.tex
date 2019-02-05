@@ -23,27 +23,180 @@
 
 \maketitle
 
-Introductory blurb.
+In this assignment, a python program was created which automatically reads in data
+from various files, then allocates first year engineering students into their
+stream in order of free choice, then GPA. The program consists of three modules; 
+one to read in the student, departement, and free choice data, one to allocate
+the students and perform operations, and one which acts as a test driver, consisting
+of test cases.
+
+The rest of this document will outline the methodology behind the testing
+and serve as a reflection on the assignment.
 
 \section{Testing of the Original Program}
 
-Description of approach to testing.  Rationale for test case selection.  Summary
-of results.  Any problems uncovered through testing.
+In order to talk about testing results and the methodology used to design test cases,
+it is important to first talk about what was assumed while coding the program.
 
-Under testing you should list any assumptions you needed to make about the
-program's inputs or expected behaviour.
+The reason assumptions had to be taken is because the specification was not formal or
+specific enough on how the interface was meant to work. For example, the specification
+gave no instructions on program behaviour when the file does not exist. Either
+an assumption had to be made that the file will always exists, or the potential
+error had to be dealt with in the code, the later of which was done in this program.
+
+The assumptions used while programming are as follows.
+
+\begin{enumerate}
+	\item All the names and macid of the students are correct and match those in
+	other files such as freeChoice.
+	\item All students have a gender that is either `male' or `female' and the 
+	gender is spelt correctly.
+	\item All students have a GPA that is between 1.0 and 12.0.
+	\item All students have three proper engineering streams that they would like
+	to go into, spelt correctly.
+	\item There is enough capacity in each department for every student with free choice
+	to be allocated to their first choice
+	\item There is enough capacity in each department for every student to be allocated
+	to at least one of their top three choices.
+	\item Every student with free choice passed first year engineering (GPA greater than or equal
+	to 4.0).
+\end{enumerate}
+
+Based on the assumptions outline above, there were two types of test cases designed.
+
+The first type of test cases checked for correctness of the functions. This type
+included the second, third, fourth, fifth, sixth, and eighth test cases. These cases
+were chosen to test the main functionality of each of the functions in CalcModule
+at least once. After these test cases, it can be confirmed that the implementation
+of the functions are correct. A description and rationale of each one will be 
+breifly discussed. All these test cases passed.
+
+The second test case checked to see whether the sort function sorted the students
+in order of GPA correctly. It just compared the output of the function to
+a dictionary of sorted students which was known to be correct. 
+
+The third, fourth, fifth, and sixth test cases check to see whether a correct
+average was returned for males and females from two different data sets. The test
+case returned false when the exact float value was compared with the output so to
+solve the issue, a float value in a very small range was compared with the output.
+
+The eighth test case confirmed that the allocate properly placed students into
+their engineering streams first by free choice, then in order of GPA.
+
+The second type of test cases checked for correct behaviour of program when weird
+inputs, like missing files, or incomplete data was passed to the functions. This 
+type included the first, seventh, and ninth test cases. The number of test cases 
+of this type required to build a modest amount of confidence in the program depends
+on the amount of assumptions. Since quite a few things were assumed, less test
+cases of this type were needed. All these test cases passed after modification to the 
+the code. The rationale behind them, problems uncovered while testing, and a brief
+description of each test case will be discussed.
+
+In the first test case, the functions in ReadAllocationData were tested instead of
+those in CalcModule. It tested for program response when all the files were empty.
+The functions responded correctly by returnning empty dictionaries or lists.
+
+In the seventh test case, the average function was checked to see behaviour when
+tried to get the average of all the females, but there are no females in the data.
+Based on this test case failing for the first time, the code had to be modified to
+return 'None', as well as correctly deal with the fact that there is no one of that
+gender in the data.
+
+Finally, the ninth test case checked to see whether the allocation function worked 
+correctly when it was given student data and none of them had free choice. This was
+tested to ensure that the function still operated correctly when one of the files
+was empty.
+
+All this list of nine test cases covered quite a bit of program functionality and
+possible errors, building confidence in the robustness and correctless of it, 
+there is still more testing that could have been done to verify these things. This
+was what could be done in the timing given.
+
+%Description of approach to testing.  Rationale for test case selection.  Summary
+%of results.  Any problems uncovered through testing.
+
+%Under testing you should list any assumptions you needed to make about the
+%program's inputs or expected behaviour.
 
 \section{Results of Testing Partner's Code}
 
-Summary of results.
+A table outlining the summary of results after running the test script on the
+partners code is seen below.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lr}
+		\toprule
+		Test Case & Result\\
+		\midrule
+		1 & Pass\\
+		2 & Pass\\
+		3 & Pass\\
+		4 & Pass\\
+		5 & Pass\\
+		6 & Pass\\
+		7 & Fail - ZeroDivisionError\\
+		8 & Pass\\
+		9 & Pass\\
+		\bottomrule
+	\end{tabular}
+	\caption{Table outlining the results of testing partner code}
+	\label{Table:Table 1}
+\end{table}
+
+The results of this table are further discussed in section 3.2
+
+%Summary of results.
 
 \section{Discussion of Test Results}
 
+The following two subsections will discuss and analyze the test results of the code
+written by the programmer, and the partners code.
+
 \subsection{Problems with Original Code}
+
+While doing the testing, two problems with the code became evident. The first is that
+if there are either no males, or no females, then the average function would divide by 0
+and would crash. This was solved by implementing a counter and checking to see if there were
+none of that particular gender. The second problem discovered is that in the dictionary of streams
+and the students in each stream, each student is supposed to represent a dictionary of a student,
+not just the macid. This was again solved by altering the code.
 
 \subsection{Problems with Partner's Code}
 
+As can be seen from the table above all the test cases were passed except for the 
+seventh one. The seventh test case check to see how the program behaved when
+asked the caluclate the average GPA of all the females, yet there were no females
+in the data.
+
+The error that was gotten was a ZeroDivisionError at line 42 in the partners
+CalcModule program. This line of code is:
+
+\centerline{\textit{aveFemale = sumFemale / numFemale}}
+
+This line of code divides the total sum by the number of females. However, if there
+are zero females, the program tries to divide by zero, throwing an error, leading
+the this particular test case to fail.
+
 \section{Critique of Design Specification}
+
+The design specification was good in some ways, but poor in others. 
+
+Since it had been the first time programming in python in a while, having restrictions 
+on the types of data structures to use, as well as a laid out module interface made it 
+simpler to begin programming. Also, since the specification was in natural language, 
+it made it easy to understand, then implement the basic idea of what the modules were 
+supposed to do.
+
+The specification was poor in that because it was given in natural language, the
+programmer had to make a lot of assumptions about things like operations on the data
+and how to deal with errors. The specification should have been made more specific
+and explicit in how exactly what the interace was so less assumptions would have to be made.
+
+A proposed change for the design is to give the specification both in natural language and
+in a formal way. This was the basic idea of the program can be understood easily, and
+the specifics can also be understood how to be dealt with. Specifying the implentation,
+especially for a first assignment is good and should be kept that way.
 
 %\newpage
 
@@ -51,11 +204,82 @@ Summary of results.
 
 \begin{enumerate}[(a)]
 
-\item answer
+\item The average function can be made more general by instead calculating the average
+GPA of students that possess a specific characteristic in common. Right now, the average
+function just gets the average of either the males or females, but a more general function
+would be able to return the average of all students with the same first stream in common
+for example.
 
-\item answer
+Along the same line of thinking, a more general sort function would be able to sort students
+by any specified characteristic like last name, macid, or first stream choice.
 
-\item ...
+\item In this context aliasing means you can have multiple names for the same dictionary.
+In general, aliasing could be a concern with dictionaries because the dictionary could
+be accidently modified or changed due to not knowing the same data structure is pointed
+to by two different names. This can be guarded against in two ways. The first is by using
+a non-mutable data stucture, like a tuple. This way it cannot be modified, only read from. The
+second is by creating copies of the dictionary and only modifiying the copies as needed.
+
+\item Even though the assignment did not require testing of ReadAllocationData, the 
+first test case tested how the function within that module respond to empty files. 
+It was tested because it was thought that it would be important to ensure that the
+functions responsible for getting the data work properly and perform as intended
+
+However some more test cases that could be done to build confidence in ReadAllocationData
+are:
+
+\begin{itemize}
+\item No filenames are passed to function.
+\item Filenames that are passed to function are incorrect.
+\item Files that are passed to the function are empty.
+\item Files that contain the correct data, but in a format that is not expected
+by the function, e.g. tabs instead of newline characters, or missing the students 
+macid.
+\item Files that are in the correct format, but contain incorrect info, e.g. two 
+stream choices instead of three, or GPA greater than 12.0.
+\end{itemize}
+
+Of the two modudles, CalcModule was chosen over ReadAllocationData to test because
+CalcModule requires ReadAllocationData to be correct. By testing just CalcModule,
+ReadAllocationData is also being tested at the same time because if the first doesn't
+work, the second one wouldn't function correctly either.
+
+Also, CalcModule does more interesting things with the data and performs operations on it
+making the test cases that would come out of it more unique and less obvious.
+
+\item The problem with using strings for a set of finite elements is that it leaves
+more room for error. Although the same functionality could be easily implemented with
+strings, using integers or something related would reduces the margin of error in the
+program. This new implementation would help catch errors early, rather than miss data
+when performing operations later. For example, having 0 = male, and 1 = female, means
+that when the data is read from the file, if it is not either a 1 or 0, an error is 
+thrown and the mistake could be corrected. If they were instead represented as before,
+and the mistake was allowed to propagate, when the average function is called, it would
+miss the person with the spelling mistake representing their gender.
+
+\item Dictionaries aren't the only option to implement records and structs in Python,
+some other options include tuples, a custom class, collections.namedtuple class, 
+typing.NamedTuple class, and the struct.Struct class. Based on the information I learned
+from: https://dbader.org/blog/records-structs-and-data-transfer-objects-in-python
+I would recomend changing the data structure to either collections.namedtuple or
+typing.NamedTuple. The reason for this is because similar to classes, both data
+structures allow for using the same format and ensuring that the fields and their 
+data are correct. The two structures are also immutable and can be accessed through
+unique identifiers. They have all the properties we want of dictionaries but are
+safer to use. In terms of implementation in the code, each student would be a
+collections.namedtuple, or typing.NamedTuple, and each student would be stored 
+in a list.
+
+\item If the list of strings was changed to a tuple, the CalcModule would not to be
+changed as the implentation would work the same. If it were changed to another data structure
+that is indexed by values, it may not need to be changed, but changing it to one that isn't
+would most likely require the code to be altered.
+
+If students were implemented as a custom class or Abstract Data Type (ADT), if the data
+structure in the class was changed, the CalcModule code would not need to be altered
+because of abstraction. The client, which is the program running, does not need to know
+how the data structure is implemented, rather it just calls the method in the class and
+uses the value returned by it.
 
 \end{enumerate}
 
